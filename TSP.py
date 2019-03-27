@@ -49,6 +49,12 @@ def pick_random(points):
     random.shuffle(order)
     return order
 
+def goBack(order):  #fixes the fact that the salesman doesn´t go back to the original city
+    order = list(order)
+    order.append(order[0])
+    return order
+
+
 def connectpoints(x,y,p1,p2):
     x1,x2 = x[p1], x[p2]
     y1, y2 = y[p1], y[p2]
@@ -78,7 +84,10 @@ def bruteForce(points,map_points):
     distances = []
     orders = []
     order = pick_random(map_points)
-    orders = list(per(order))
+    orders = (list(per(order)))
+    for i in range(len(orders)):
+        orders[i] = goBack(orders[i])
+    print(orders)
     orders = orders[:int(len(orders)/2)]
     for i in range(len(orders)):
         distance = total_distance(map_points, orders[i])
@@ -111,6 +120,9 @@ def minEach(points,map_points):
 def plotAll(map_points,points):
     order = pick_random(points)
     orders = list(per(order))
+    for i in range(len(orders)):
+        orders[i] = goBack(orders[i])
+    orders = orders[:int(len(orders)/2)]
     #orders = orders[:int(len(orders)/2)]
     for i in range(len(orders)):
         distance = str(total_distance(map_points,orders[i]))
@@ -119,7 +131,7 @@ def plotAll(map_points,points):
         plot_points(map_points,points,orders[i])
 
 
-points, distance_map = initialize_map(10)
+points, distance_map = initialize_map(8)
 #distance, order = bruteForce(distance_map)
 print('distance map ', distance_map)
 #plotAll(distance_map,points)
